@@ -30,15 +30,18 @@ public class BinaryTree
         {
             //return the last turn we made
             //HOW DO WE KNOW WHAT WAS THE LAST TURN?
+
             return String.valueOf("Out of balance b/c:" + val);
         }
         else
         {
+            this.payload = payload;
+            return String.valueOf(payload);
 
             //keep traversing the tree and ultimately return left or right
 
         }
-        return null;
+
     }
 
     public int depth()
