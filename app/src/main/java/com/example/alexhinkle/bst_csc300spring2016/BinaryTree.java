@@ -18,6 +18,14 @@ public class BinaryTree
         this.temp = temp;
     }
 
+    public void setLeftTree(BinaryTree leftTree) {
+        this.leftTree = leftTree;
+    }
+
+    public void setRightTree(BinaryTree rightTree) {
+        this.rightTree = rightTree;
+    }
+
     public boolean isOutOfBalance()
     {
         int leftDepth = this.leftTree == null?0:this.leftTree.depth();
@@ -43,11 +51,11 @@ public class BinaryTree
             if(val <= this.payload)
             {
                 //we would have added it to the left
-                leftTree.rotateLeftLeft(val);
+
                 return this.leftTree.outOfBalanceSecondarily(val, "left");
             }
             else
-            {      rightTree.rotateRightRight(val);
+            {
                 return this.rightTree.outOfBalanceSecondarily(val, "right");
             }
         }
@@ -62,15 +70,21 @@ public class BinaryTree
 
     public void add(char payload)
     {
+        BSTCore.grandParent = BSTCore.parent;
+        BSTCore.parent = BSTCore.pivot;
+        BSTCore.pivot = this;
         if(payload <= this.payload)
         {
             if(this.leftTree == null)
             {
                 this.leftTree = new BinaryTree(payload);
+                BSTCore.culprit = this.leftTree;
             }
             else
             {
+                BSTCore.pivot = this;
                 this.leftTree.add(payload);
+
 
             }
         }
@@ -79,10 +93,44 @@ public class BinaryTree
             if(this.rightTree == null)
             {
                 this.rightTree = new BinaryTree(payload);
+                BSTCore.culprit = this.rightTree;
             }
             else
             {
+                BSTCore.pivot = this;
                 this.rightTree.add(payload);
+            }
+        }
+    }
+
+    public void add(BinaryTree tree)
+    {
+        if(tree.payload <= this.payload)
+        {
+            if(this.leftTree == null)
+            {
+                this.leftTree = tree;
+
+            }
+            else
+            {
+
+                this.leftTree.add(tree);
+
+
+            }
+        }
+        else
+        {
+            if(this.rightTree == null)
+            {
+                this.rightTree = tree;
+
+            }
+            else
+            {
+
+                this.rightTree.add(tree);
             }
         }
     }
@@ -146,26 +194,8 @@ public class BinaryTree
     {
         return rightTree;
     }
-    public char rotateLeftLeft(char val)
-    {
-        if(this.leftTree.isOutOfBalance());
-        {
-            temp = val;
-            rightTree.add(temp);
-            return rotateLeftLeft(val);
 
-        }
 
-    }
-    public char rotateRightRight(char val)
-    {
-        if(this.rightTree.isOutOfBalance());
-        {
-            temp = val;
-            leftTree.add(temp);
-            return rotateLeftLeft(val);
 
-        }
 
-    }
 }

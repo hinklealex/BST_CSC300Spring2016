@@ -10,6 +10,7 @@ public class BST
     public BST()
     {
         this.root = null;
+        BSTCore.theTree = this;
     }
 
     public boolean isOutOfBalance()
@@ -28,10 +29,43 @@ public class BST
         }
 
         //where are we out of balance secondarily? left or right?
+        System.out.println(root);
         String outOfBalanceSecondarily = this.root.outOfBalanceSecondarily(val, "DEFAULT TURN");
 
         //Finaly print out how we are out of balance
         System.out.println("Out of balance: " + outOfBalanceInitial + " - " + outOfBalanceSecondarily);
+    }
+
+    public void rebalanceLeftLeft()
+    {
+        //assuming we are out of balance left left
+        if(BSTCore.grandParent != null)
+        {
+            BSTCore.grandParent.setLeftTree(BSTCore.pivot);
+
+        }
+        else
+        {
+            BSTCore.theTree.root = BSTCore.pivot;
+        }
+        BSTCore.parent.setLeftTree(null);
+        BSTCore.pivot.add(BSTCore.parent);
+    }
+
+    public void rebalanceRightRight()
+    {
+        //assuming we are out of balance left left
+        if(BSTCore.grandParent != null)
+        {
+            BSTCore.grandParent.setRightTree(BSTCore.pivot);
+
+        }
+        else
+        {
+            BSTCore.theTree.root = BSTCore.pivot;
+        }
+        BSTCore.parent.setRightTree(null);
+        BSTCore.pivot.add(BSTCore.parent);
     }
 
     public void add(char payload)
@@ -39,6 +73,7 @@ public class BST
         if(this.root == null)
         {
             this.root = new BinaryTree(payload);
+            BSTCore.culprit = this.root;
         }
         else
         {
