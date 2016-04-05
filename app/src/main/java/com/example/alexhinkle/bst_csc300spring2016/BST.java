@@ -28,9 +28,10 @@ public class BST
         }
 
         //where are we out of balance secondarily? left or right?
-        String outOfBalanceSecondarily = this.root.outOfBalanceSecondarily(val);
+        String outOfBalanceSecondarily = this.root.outOfBalanceSecondarily(val, "DEFAULT TURN");
 
         //Finaly print out how we are out of balance
+        System.out.println("Out of balance: " + outOfBalanceInitial + " - " + outOfBalanceSecondarily);
     }
 
     public void add(char payload)

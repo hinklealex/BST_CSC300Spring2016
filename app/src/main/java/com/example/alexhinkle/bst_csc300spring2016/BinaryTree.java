@@ -8,12 +8,14 @@ public class BinaryTree
     private char payload;
     private BinaryTree leftTree;
     private BinaryTree rightTree;
+    private char temp;
 
     public BinaryTree(char payload)
     {
         this.payload = payload;
         this.leftTree = null;
         this.rightTree = null;
+        this.temp = temp;
     }
 
     public boolean isOutOfBalance()
@@ -23,25 +25,32 @@ public class BinaryTree
         return Math.abs(leftDepth-rightDepth) > 1;
     }
 
-    public String outOfBalanceSecondarily(char val)
+    public String outOfBalanceSecondarily(char val, String lastTurn)
     {
         //are we looking at a matching payload and are we a leaf node
         if(this.payload == val && this.leftTree == null)
         {
+            //we are looking at THE last tree added
             //return the last turn we made
-            //HOW DO WE KNOW WHAT WAS THE LAST TURN?
-
-            return String.valueOf("Out of balance b/c:" + val);
+            return lastTurn;
         }
         else
         {
-            this.payload = payload;
-            return String.valueOf(payload);
+            //I might have a payload that matches val, or I am still looking for a matching payload
+            //in either case, I am not at THE last leaf added.
 
             //keep traversing the tree and ultimately return left or right
-
+            if(val <= this.payload)
+            {
+                //we would have added it to the left
+                leftTree.rotateLeftLeft(val);
+                return this.leftTree.outOfBalanceSecondarily(val, "left");
+            }
+            else
+            {      rightTree.rotateRightRight(val);
+                return this.rightTree.outOfBalanceSecondarily(val, "right");
+            }
         }
-
     }
 
     public int depth()
@@ -62,6 +71,7 @@ public class BinaryTree
             else
             {
                 this.leftTree.add(payload);
+
             }
         }
         else
@@ -135,5 +145,27 @@ public class BinaryTree
     public BinaryTree getRightTree()
     {
         return rightTree;
+    }
+    public char rotateLeftLeft(char val)
+    {
+        if(this.leftTree.isOutOfBalance());
+        {
+            temp = val;
+            rightTree.add(temp);
+            return rotateLeftLeft(val);
+
+        }
+
+    }
+    public char rotateRightRight(char val)
+    {
+        if(this.rightTree.isOutOfBalance());
+        {
+            temp = val;
+            leftTree.add(temp);
+            return rotateLeftLeft(val);
+
+        }
+
     }
 }
