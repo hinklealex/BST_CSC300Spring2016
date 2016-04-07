@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         BST tree = new BST();
-        String vals = "gfa";
+        String vals = "afg";
         for(int i = 0; i < vals.length(); i++)
         {
             tree.add(vals.charAt(i));
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity
             tree.howAreWeOutOfBalance('a');
         }
 
-        tree.rebalanceLeftLeft();
+        tree.rebalanceRightRight();
         System.out.println("Out of balance: " + tree.isOutOfBalance());
         
 
