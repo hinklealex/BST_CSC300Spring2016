@@ -5,6 +5,7 @@ package com.example.alexhinkle.bst_csc300spring2016;
  */
 public class BSTCore
 {
+    static char lastEnrty = '?';
     static BST theTree = null;
     static BinaryTree culprit = null;
     static BinaryTree pivot = null;

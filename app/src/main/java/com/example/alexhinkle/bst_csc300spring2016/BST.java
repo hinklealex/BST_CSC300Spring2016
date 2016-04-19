@@ -13,14 +13,15 @@ public class BST
         BSTCore.theTree = this;
     }
 
-    public boolean isOutOfBalance()
+    private boolean isOutOfBalance()
     {
         //boolean-exp?true-stmt:false-stmt
         return this.root.isOutOfBalance();
     }
 
-    public void howAreWeOutOfBalance(char val)
+    private String howAreWeOutOfBalance()
     {
+        char val = BSTCore.lastEnrty;
         //where are we out of balance initially? left or right?
         String outOfBalanceInitial = "right";
         if(val <= this.root.getPayload())
@@ -31,45 +32,70 @@ public class BST
         //where are we out of balance secondarily? left or right?
         System.out.println(root);
         String outOfBalanceSecondarily = this.root.outOfBalanceSecondarily(val, "DEFAULT TURN");
-
+        return outOfBalanceInitial + " - " + outOfBalanceSecondarily;
         //Finaly print out how we are out of balance
-        System.out.println("Out of balance: " + outOfBalanceInitial + " - " + outOfBalanceSecondarily);
+
     }
 
-    public void rebalanceLeftLeft()
+    private boolean canRebalance()
     {
-        //assuming we are out of balance left left
-        if(BSTCore.grandParent != null)
-        {
-            BSTCore.grandParent.setLeftTree(BSTCore.pivot);
-
-        }
-        else
-        {
-            BSTCore.theTree.root = BSTCore.pivot;
-        }
-        BSTCore.parent.setLeftTree(null);
-        BSTCore.pivot.add(BSTCore.parent);
+        return false;
     }
 
-    public void rebalanceRightRight()
+    public void rebalance()
     {
-        //assuming we are out of balance left left
-        if(BSTCore.grandParent != null)
-        {
-            BSTCore.grandParent.setRightTree(BSTCore.pivot);
+        if(this.canRebalance()) {
+
+
+            if (this.isOutOfBalance()) {
+                if (howAreWeOutOfBalance().equals("left - left")) {
+                    if (BSTCore.grandParent != null) {
+                        BSTCore.grandParent.setLeftTree(BSTCore.pivot);
+
+                    } else {
+                        BSTCore.theTree.root = BSTCore.pivot;
+                    }
+                    BSTCore.parent.setLeftTree(null);
+                    BSTCore.pivot.add(BSTCore.parent);
+                } else if (howAreWeOutOfBalance().equals("right - right")) {
+                    if (BSTCore.grandParent != null) {
+                        BSTCore.grandParent.setRightTree(BSTCore.pivot);
+
+                    } else {
+                        BSTCore.theTree.root = BSTCore.pivot;
+                    }
+                    BSTCore.parent.setRightTree(null);
+                    BSTCore.pivot.add(BSTCore.parent);
+                }
+            } else if (howAreWeOutOfBalance().equals("right - left")) {
+                BSTCore.culprit.setRightTree(BSTCore.pivot);
+                BSTCore.parent.setRightTree(BSTCore.culprit);
+                BSTCore.pivot.setLeftTree(null);
+                //Swap pivot and culprit in prep for right right rebalance
+                BinaryTree temp = BSTCore.culprit;
+                BSTCore.culprit = BSTCore.pivot;
+                BSTCore.pivot = temp;
+
+            } else if (howAreWeOutOfBalance().equals("left - right")) {
+                BSTCore.culprit.setLeftTree(BSTCore.pivot);
+                BSTCore.parent.setLeftTree(BSTCore.culprit);
+                BSTCore.pivot.setRightTree(null);
+                //Swap pivot and culprit in prep for left left rebalance
+                BinaryTree temp = BSTCore.culprit;
+                BSTCore.culprit = BSTCore.pivot;
+                BSTCore.pivot = temp;
+            } else {
+                System.out.println("Tree is NOT out of ballance");
+            }
 
         }
-        else
-        {
-            BSTCore.theTree.root = BSTCore.pivot;
-        }
-        BSTCore.parent.setRightTree(null);
-        BSTCore.pivot.add(BSTCore.parent);
     }
+
+
 
     public void add(char payload)
     {
+        BSTCore.lastEnrty = payload;
         if(this.root == null)
         {
             this.root = new BinaryTree(payload);
